@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Folder Assigner App</title>
+    <meta name="Name" content="Test Folder Assigner App" />
+    <meta name="Version" content="1.0" />
+    <meta name="Vendor" content="Rally Software" />
+    <meta name="Author" content="Joel K, special thanks to Andrew H" />
+
+<!-- Left side is test cases without folders -->
+<!-- Right side is test folders -->
+<!-- ONLY WORKS FOR PROJECT LEVELS WHERE PROJECT AND TEST PLANS ARE DEFINED -->
+
+    <script type="text/javascript" src="/apps/2.0p5/sdk.js"></script>
+    
+    <script type="text/javascript">
+            
+    Rally.onReady(function() {
+
+        Ext.define('Tests.NoFolders', {
+            extend: 'Ext.Container',
+            
+            items: [{
+                xtype: 'rallytree',
+                topLevelModel: 'TestCase',
+                enableDragAndDrop: true,
+                topLevelStoreConfig: {
+                    sorters: [],
+                    filters: [
+                        {
+                            property: 'TestFolder',
+                            value: 'null'
+                        }
+                    ]
+                },
+            }],
+            renderTo: Ext.getBody().dom
+        });
+
+
+        Ext.define('Tests.InFolders', {
+            extend: 'Ext.Container',
+        
+            items: [{
+                xtype: 'rallytree',
+                topLevelModel: 'TestFolder',
+                childModelTypeForRecordFn: function(record){
+                    if(record.get('Children') && record.get('Children').length > 0){
+                        return 'TestFolder';
+                    } else {
+                        return 'TestCase';
+                    }
+                },
+                parentAttributeForChildRecordFn: function(record){
+                    if(record.get('Children') && record.get('Children').length > 0){
+                        return 'Parent';
+                    } else {
+                        return 'TestFolder';
+                    }
+                },
+                canExpandFn: function(record){
+                    return record.get('Children') && record.get('Children').length > 0
+                    || record.get('TestCases') && record.get('TestCases').length > 0;
+                },
+                enableDragAndDrop: true,
+                dragThisGroupOnMeFn: function(record){
+                    if(record.get('_type') === 'testfolder'){
+                        if(record.get('Children') && record.get('Children').length > 0){
+                            return 'testfolder';
+                        }
+                        if(record.get('TestCases') && record.get('TestCases').length > 0){
+                            return 'testcase';
+                        }
+                        return ['testfolder', 'testcase'];
+                    }
+                },
+                topLevelStoreConfig: {
+                    sorters: []
+                },
+                childItemsStoreConfigForParentRecordFn: function(){
+                    return {
+                        sorters: []
+                    };
+                }
+            }],
+            renderTo: Ext.getBody().dom
+        });
+ 
+ 
+ 
+        Ext.define('TestFolderAssigner', {
+                extend: 'Rally.app.App',
+                componentCls: 'app',
+            
+                items: [
+                    {
+                        xtype: 'container',
+                        cls: 'leftSide',
+                        itemId: 'leftSide'
+                    },
+                    {
+                        xtype: 'container',
+                        cls: 'rightSide',
+                        itemId: 'rightSide'
+                    }
+                ],
+            
+                launch: function() {
+                    this.buildTestTree();
+                    this.buildTestFolderTree();
+                },
+            
+                buildTestTree: function(){
+                    var testTree = Ext.create('Tests.NoFolders');
+                    this.down('#leftSide').add(testTree);
+                },
+                
+                buildTestFolderTree: function(){
+                    var testfoldertree = Ext.create('Tests.InFolders');
+                    this.down('#rightSide').add(testfoldertree);
+                }
+            
+            });
+
+            Rally.launchApp('TestFolderAssigner', {
+                name: 'TestFolderAssigner'
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        body {
+            overflow-y: auto !important;
+        }
+        
+        .app {
+            margin: 10px 30px;
+        }
+        
+        .app > .leftSide {
+            float: left;
+            width: 45%;
+        }
+        
+        .app > .rightSide {
+            float: right;
+            width: 45%;
+        }
+        
+        h1 {
+            font-size: 14px;
+            margin: 5px;
+        }
+        
+        .grayLabel {
+            color: #888;
+            margin: 5px 15px;
+        }
+        
+        
+        .percentDoneContainer {
+            height: 15px;
+            line-height: 15px;
+        }
+        
+        .planEstimate {
+            width: 20px;
+            height: 20px;
+            border: 1px dotted #5C9ACB;
+            text-align: center;
+            margin-right: 4px;
+            position: absolute;
+            top: 5px;
+            right: 3px;
+        }    </style>
+  
+</head>
+<body></body>
+</html>

@@ -9,5 +9,5 @@ Usage video is available here:<P>
 http://screencast.com/t/lQuyRNoijVK
 
 Screenshot:<P>
-![Alt text](https://github.com/jkrooswyk/Test Folder Assigner/raw/master/Test Folder Assigner Screen Shot.png)
+![Alt text](https://github.com/jkrooswyk/Test-Folder-Assigner/raw/master/Test Folder Assigner Screen Shot.png)
 

@@ -8,6 +8,6 @@ Limitations: (1)The Project where test cases and test folders are created must b
 Usage video is available here:<P>
 http://screencast.com/t/lQuyRNoijVK
 
-Screenshot:<P>
+Screenshot (Title headers have been added since this screenshot was taken):<P>
 ![Alt text](https://github.com/jkrooswyk/Test-Folder-Assigner/raw/master/Test Folder Assigner Screen Shot.png)
 

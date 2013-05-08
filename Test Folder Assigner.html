@@ -18,8 +18,8 @@
     Rally.onReady(function() {
 
         Ext.define('Tests.NoFolders', {
-            extend: 'Ext.Container',
-            
+            extend: 'Ext.Panel',
+            title: "Test Cases not Assigned to Folders",
             items: [{
                 xtype: 'rallytree',
                 topLevelModel: 'TestCase',
@@ -39,8 +39,8 @@
 
 
         Ext.define('Tests.InFolders', {
-            extend: 'Ext.Container',
-        
+            extend: 'Ext.Panel',
+            title: "Test Folders",
             items: [{
                 xtype: 'rallytree',
                 topLevelModel: 'TestFolder',
